@@ -2,29 +2,26 @@
 <input type="button" value="Off" onclick="off()">
 
 <script>
-  let data = {
-    status: "complete"
-  };
-
   window.post = function (url, data) {
-    return fetch(url, {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    fetch(url, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+      .then(res => console.log(res));
   }
 
   function on() {
-    post("on", {
-      element: "osmium"
+    post("control", {
+      task: "on"
     });
   }
 
   function off() {
-    post("off", {
-      element: "osmium"
+    post("control", {
+      task: "off"
     });
   }
 </script>

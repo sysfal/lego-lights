@@ -48,21 +48,16 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route("/on", methods=['POST'])
-def all_on():
-    #Moving forward code
-    forward_message = "All on"
+@app.route("/control", methods=['POST'])
+def control():
+    content = request.json
+    print(content)
+    value = 0
+    if content['task'] == 'on':
+      value = 4095
     for i in range(48):
-	    tlc5947[i] = 4095
-    return jsonify({'task': 'on'}), 201
-
-@app.route("/off", methods=['POST'])
-def all_off():
-    #Moving forward code
-    forward_message = "All off"
-    for i in range(48):
-	    tlc5947[i] = 0
-    return jsonify({'task': 'off'}), 201
+      tlc5947[i] = value
+    return jsonify({'task': content['task'] + ' done'}), 201
 
 if __name__ == '__main__':
     app.run(debug=True, port=80, host='0.0.0.0')
