@@ -5,7 +5,7 @@ import digitalio
 import adafruit_tlc5947
 from time import sleep
 
-from flask import Flask, render_template, Response, request, redirect, url_for
+from flask import Flask, render_template, Response, request, redirect, url_for, jsonify
 
 DRIVER_COUNT = 2
 spi = busio.SPI(clock=board.SCK, MOSI=board.MOSI)
@@ -48,21 +48,21 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-@app.route("/on/", methods=['POST'])
+@app.route("/on", methods=['POST'])
 def all_on():
     #Moving forward code
     forward_message = "All on"
     for i in range(48):
 	    tlc5947[i] = 4095
-    return render_template('index.html', forward_message=forward_message);
+    return jsonify({'task': 'on'}), 201
 
-@app.route("/off/", methods=['POST'])
+@app.route("/off", methods=['POST'])
 def all_off():
     #Moving forward code
     forward_message = "All off"
     for i in range(48):
 	    tlc5947[i] = 0
-    return render_template('index.html', forward_message=forward_message);
+    return jsonify({'task': 'off'}), 201
 
 if __name__ == '__main__':
     app.run(debug=True, port=80, host='0.0.0.0')
