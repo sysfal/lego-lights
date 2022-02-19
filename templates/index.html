@@ -1,7 +1,25 @@
-<input type="button" value="On" onclick="on()">
-<input type="button" value="Off" onclick="off()">
+<input type="button" value="On" onclick="on(-1)">
+<input type="button" value="Off" onclick="off(-1)">
+
+<div id="lights"></div>
 
 <script>
+  fetch("control").then(res => res.json())
+    .then(res => {
+      console.log(res);
+
+      lights = document.getElementById("lights");
+
+      for (var i = 0; i < res.length; i++) {
+        lights.innerHTML += `
+        <div>` + i + `
+        <input type="button" id="` + i + `" value="On" onclick="on(this.id)">
+        <input type="button" id="` + i + `" value="Off" onclick="off(this.id)">
+        </div>
+        `;
+      }
+    });
+
   window.post = function (url, data) {
     fetch(url, {
         method: "POST",
@@ -13,15 +31,19 @@
       .then(res => console.log(res));
   }
 
-  function on() {
+  function on(value) {
+    console.log(value);
     post("control", {
-      task: "on"
+      task: "on",
+      index: Number(value)
     });
   }
 
-  function off() {
+  function off(value) {
+    console.log(value);
     post("control", {
-      task: "off"
+      task: "off",
+      index: Number(value)
     });
   }
 </script>
