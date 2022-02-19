@@ -1,7 +1,30 @@
-<form action="/on/" method="post">
-  <button name="onBtn" type="submit">All on</button>
-</form>
+<input type="button" value="On" onclick="on()">
+<input type="button" value="Off" onclick="off()">
 
-<form action="/off/" method="post">
-  <button name="offBtn" type="submit">All off</button>
-</form>
+<script>
+  let data = {
+    status: "complete"
+  };
+
+  window.post = function (url, data) {
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+  }
+
+  function on() {
+    post("on", {
+      element: "osmium"
+    });
+  }
+
+  function off() {
+    post("off", {
+      element: "osmium"
+    });
+  }
+</script>
